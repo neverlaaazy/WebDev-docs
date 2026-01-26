@@ -1,0 +1,1 @@
+Локальный сервер XAMPP, UWAMP, OpenServer, (PostgreSQL если хотим), visual studio code, Composer (для языка php), Node, Git (программа), Figma.com, Github.com

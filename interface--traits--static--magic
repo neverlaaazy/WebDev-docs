@@ -1,0 +1,270 @@
+--------------------Интерфейсы (контракт)---------------
+Интерфейс описывает контракт, который класс должен выполнить, т.е. описывает все необходимые методы без реализации.
+Содержит объявления методов без реализации.
+Преимущества:
+Стандартизация: Единый контракт для разных классов.
+Гибкость: Классы могут реализовывать несколько интерфейсов.
+Тестирование: Упрощает тестирование.
+
+
+Синтаксис:
+
+Пример 1:
+interface FigureInterface
+{
+  public function getSquare();
+	public function getPerimeter();
+}
+
+class Rectangle implements Figure
+{
+	private $a;		
+	public function __construct($a)	{
+		$this->a = $a;
+	}		
+	public function getSquare(){
+		return $this->a * $this->a;
+	}		
+	public function getPerimeter(){
+		return 4 * $this->a;
+	}
+}
+
+class Circle implements Figure
+{
+	private $r;		
+	public function __construct($r)	{
+		$this->r = $r;
+	}		
+	public function getSquare(){
+		return pi()* $this->r**2;
+	}		
+	public function getPerimeter(){
+		return 2 * pi()* $this->r;
+	}
+}
+
+Пример 2:
+interface A { public function methodA(); }
+
+interface B { public function methodB(); }
+
+class C implements A, B { ... }
+
+
+class C { public function methodC(){…}; }
+
+class D extends C implements A, B { ... }
+
+-----------------------Трейты (Traits)------------------
+Трейты — это механизм повторного использования кода в PHP, своего рода, решение проблемы множественного насследования.
+Включаются в класс через ключевое слово use.
+
+Ограничения:
+    Не могут содержать константы.
+    Конфликты имён при использовании нескольких трейтов.
+
+Синтаксис:
+
+Пример 1:
+trait HasRest
+{
+	public int $duration = 8;
+	public function rest(int $):void
+	{
+		echo "$this->name отдыхает 					$this->duration часов";
+	}
+}
+
+class Student extends User
+{
+	use HasRest;
+	…
+}
+
+$student1 = new Student("Олег", 18);
+$student1->duration = 5;
+$student1->rest();
+//Олег отдыхает 5 часов
+
+Пример 2:
+trait TraitA {
+public function sayHello(){echo 'Hello';}
+}
+trait TraitB {
+public function sayWorld(){ echo 'World';}
+}
+class MyHelloWorld
+{
+use TraitA, TraitB; // Класс разрешает внедрять несколько трейтов
+public function sayHelloWorld()
+  {
+    $this->sayHello();
+    echo ' ';
+    $this->sayWorld();
+    echo "! ";
+  }
+}
+
+
+-------------------Статические элементы-----------------
+Принадлежат классу, а не экземпляру объекта.
+Не требуют создания объекта через new.
+Вызываются напрямую через имя класса.
+Общие для всех экземпляров класса.
+
+Бывают: 
+Статические методы
+Статические свойства
+Статические классы
+
+Синтаксис:
+
+Пример 1:
+class Counter {
+    public static int $count = 0;
+
+    public function __construct() {
+        self::$count++;
+    }
+}
+
+echo Counter::$count; // 0
+new Counter();
+echo Counter::$count; // 1
+
+Пример 2:
+class MathUtils {
+    public static function add(int $a, int $b): int 
+	{
+        return $a + $b;
+    }
+}
+
+$result = MathUtils::add(5, 3); // 8
+
+Пример 3:
+class MathUtils {
+    public static function add(int $a, int $b): int 
+	{
+        return $a + $b;
+    }
+	public static function perimeterOfRect(int $l, int $w): int
+	{
+		return self::add($l, $w) * 2;
+	}
+}
+
+$perim = MathUtils::perimeterOfRect(5, 3); // 16
+
+------------------------Статические классы--------------
+Классы, в которых все методы и свойства статические.
+Часто используются для утилитарных функций.
+Не предназначены для создания экземпляров.
+Нарушают инкапсуляцию и усложняют тестирование.
+Статические методы не полиморфны.
+
+Синтаксис:
+
+Пример 1:
+class MathUtils {
+    public static function add(int $a, int $b): int 
+	{
+        return $a + $b;
+    }
+	public static function perimeterOfRect(int $l, int $w): int
+	{
+		return self::add($l, $w) * 2;
+	}
+
+    // Приватный конструктор запрещает создание экземпляров
+    private function __construct() {}
+}
+
+----------------------Магические методы-----------------
+Специальные методы, которые автоматически вызываются PHP при определенных событиях
+Начинаются с двойного подчеркивания: __
+Позволяют переопределить стандартное поведение объектов
+Не вызываются напрямую разработчиком.
+
+__construct() - Конструктор объекта
+__destruct() - Деструктор объекта
+__get() - Чтение недоступных свойств
+__set() - Запись недоступных свойств
+__call() - Вызов недоступных методов
+__toString() - Преобразование в строку
+
+Синтаксис:
+
+Пример __construct и __destruct:
+class User {
+    private string $name;    
+    public function __construct(string $name) {
+        $this->name = $name;
+        echo "Создан пользователь: {$this->name}";
+    }    
+    public function __destruct() {
+        echo "Удален пользователь: {$this->name}";
+    }
+}
+
+$user = new User('Иван'); // Вызывается __construct
+// Код программы...
+// При завершении скрипта вызывается __destruct
+
+
+Управление доступом к свойствам: __get() и __set() 
+class Config {
+    private array $data = [];    
+    public function __set($name, $value) {
+        $this->data[$name] = $value;
+    }    
+    public function __get($name) {
+        return $this->data[$name] ?? null;
+    }
+}
+
+$config = new Config();
+$config->db_host = 'localhost'; // Вызывается __set
+echo $config->db_host; // Вызывается __get
+
+
+Перехват вызовов методов: __call() и __callStatic()
+class Logger {
+    public function __call($method, $args) {
+        echo "Вызван метод: {$method} с аргументами: " 
+             . implode(', ', $args);
+    }
+    
+    public static function __callStatic($method, $args) {
+        echo "Статический вызов: {$method}";
+    }
+}
+
+$logger = new Logger();
+$logger->logError('Ошибка 404'); // Вызывается __call
+Logger::staticMethod(); // Вызывается __callStatic
+
+*Запускается при обращении к недопустимым методам.
+*Функция implode объединяет элементы массива в одну строку с использованием заданного разделителя.
+
+
+Преобразование объекта в строку __toString()
+class Product {
+    public function __construct(
+        public string $name, 
+        public float $price
+    ) {}
+    
+    public function __toString(): string {
+        return "Товар: {$this->name}, Цена: {$this->price} руб.";
+    }
+}
+
+$product = new Product('Телефон', 15000);
+echo $product; // Вызывается __toString()
+// Вывод: "Товар: Телефон, Цена: 15000 руб."
+
+*Когда к объекту обращаются как к строке.
+
+--------------------------------------------------------

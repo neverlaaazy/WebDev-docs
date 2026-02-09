@@ -283,4 +283,39 @@ $obj = new DynamicProperties();
 isset($obj->test); // Вызывается __isset
 unset($obj->test); // Вызывается __unset
 
+--------Функции для работы с классами и объектами ------
+class_exists — Проверяет, доступна ли автозагрузка класса или содержит ли код объявление класса
+get_class — Возвращает имя класса, которому принадлежит объект
+get_class_methods — Возвращает массив имён методов класса
+get_class_vars — Получает свойства класса, которые объявили по умолчанию
+get_declared_classes — Возвращает массив с именами объявленных классов
+get_declared_interfaces — Возвращает массив объявленных интерфейсов
+get_declared_traits — Возвращает массив объявленных трейтов
+is_a — Проверяет, принадлежит ли объект типу или подтипу
+get_object_vars — Возвращает свойства указанного объекта
+get_parent_class — Получает имя родительского класса для объекта или класса
+interface_exists — Проверяет, определён ли интерфейс
+method_exists — Проверяет, определили ли метод в классе
+property_exists — Проверяет, есть ли у объекта или класса свойство
+trait_exists — Проверяет, существует ли трейт
+
+// Проверка существования класса
+if (class_exists('MyClass')) {
+    $obj = new MyClass();
+}
+// Проверка интерфейса
+if (interface_exists('MyInterface')) {
+    class MyClass implements MyInterface {}
+}
+// Проверка трейта
+if (trait_exists('MyTrait')) {
+    class MyClass {
+        use MyTrait;
+    }
+}
+
+------------------------Доп ссылки----------------------
+Магические методы - https://www.php.net/manual/ru/language.oop5.magic.php
+Функции работы с классами и объектами - https://www.php.net/manual/ru/ref.classobj.php
+
 --------------------------------------------------------

@@ -267,4 +267,20 @@ echo $product; // Вызывается __toString()
 
 *Когда к объекту обращаются как к строке.
 
+
+Проверка и удаление свойств __isset() и __unset()
+class DynamicProperties {
+    private array $props = [];    
+    public function __isset($name): bool {
+        return isset($this->props[$name]);
+    }    
+    public function __unset($name): void {
+        unset($this->props[$name]);
+    }
+}
+
+$obj = new DynamicProperties();
+isset($obj->test); // Вызывается __isset
+unset($obj->test); // Вызывается __unset
+
 --------------------------------------------------------

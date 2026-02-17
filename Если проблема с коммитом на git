@@ -1,0 +1,2 @@
+Если кто-то глобально зарегался, то нужно выполнить команду
+git config credential.username yournickname
